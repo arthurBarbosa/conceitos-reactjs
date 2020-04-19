@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import api from './services/api';
 
 import "./styles.css";
@@ -17,14 +17,17 @@ function App() {
       title: "Passaro app",
       url: 'https://github.com/arthurBarbosa/passaro-app',
       techs: ['Angular', 'Typescript']
-    
+
     })
-    const repository  = response.data;
+    const repository = response.data;
     setRepositories([...repositories, repository]);
   }
 
   async function handleRemoveRepository(id) {
-    // TODO
+    await api.delete(`repositories/${id}`);
+    setRepositories(repositories.filter(
+      repository => repository.id != id
+    ));
   }
 
   return (
@@ -33,7 +36,7 @@ function App() {
         {repositories.map(repository => (
           <li key={repository.id}>
             {repository.title}
-            <button onClick={() => handleRemoveRepository(1)}>
+            <button onClick={() => handleRemoveRepository(repository.id)}>
               Remover
             </button>
           </li>
